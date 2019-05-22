@@ -82,7 +82,7 @@
   <!-- Generates child joint of parent -->
   <xacro:macro name="arm_joint" params="child parent dist:=0 axis">
 
-    <joint name="${parent}_${child}_joint" type="prismatic">
+    <joint name="${parent}_${child}_joint" type="revolute">
       <origin xyz="0 0 ${dist}" rpy="0 0 0"/>
       <parent link="${parent}"/>
       <child link="${child}"/>
