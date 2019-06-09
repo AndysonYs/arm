@@ -1,4 +1,4 @@
-import arm_control.joint_trajectory_controller
+import arm_control.joint_trajectory_controller as jointHandler
 
 def init(jointMsg, jointHandler):
     # check joint message
