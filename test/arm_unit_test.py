@@ -8,65 +8,35 @@ def toLog(time, level, path, info):
     LEVEL = ["WARNING", "ERROR", "INFO"]
     print(time+" "+LEVEL[level]+" "+path+" "+info)
 
-def testUpperArmMove():
+def unitTestInit():
     jointMsg jm = jointMsg("test")
-    init(jm, jointHandler)
-    target = jointHandler.highest()
-    upperArmMove(target, jointHandler)
-    if jointHander.pos.equal(target): 
+    if init(jm, jointHandler) == True:
        time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
        level = 2
-       info = "succeed" 
-    else:
+       info = "succeed"
+    else: 
        time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
        level = 1
-       info = "upperArmMove test failed"
-        
-    print(toLog(time, level , "arm_interface", info))
-
-    target = jointHandler.lowest()
-    upperArmMove(target, jointHandler)
-    if jointHander.pos.equal(target): 
-       time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
-       level = 2
-       info = "succeed" 
-    else:
-       time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
-       level = 1
-       info = "upperArmMove test failed"
-        
-    print(toLog(time, level , "arm_interface", info))
+       info = "init unit test failed"
     
-    target = jointHandler.randomUnreachable()
-    try:
-       upperArmMove(target, jointHandler)
+    print(toLog(time, level , "arm_interface", info))
+
+    jointMsg jmWrong = jointMsg("testWrong")
+    if init(jmWrong, jointHandler) == True:
        time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
        level = 1
-       info = "upperArmMove test failed"
-    finally:
+       info = "init unit test failed"
+    else: 
        time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
        level = 2
-       info = "succeed" 
+       info = "succeed"
         
     print(toLog(time, level , "arm_interface", info))
 
-def testLowerArmMove():
+def unitTestLowerArmMove():
     jointMsg jm = jointMsg("test")
     init(jm, jointHandler)
-    target = jointHandler.highest()
-    lowerArmMove(target, jointHandler)
-    if jointHander.pos.equal(target): 
-       time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
-       level = 2
-       info = "succeed" 
-    else:
-       time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
-       level = 1
-       info = "lowerArmMove test failed"
-        
-    print(toLog(time, level , "arm_interface", info))
-
-    target = jointHandler.lowest()
+    target = jointHandler.randomAvailable()
     lowerArmMove(target, jointHandler)
     if jointHander.pos.equal(target): 
        time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
@@ -92,7 +62,38 @@ def testLowerArmMove():
         
     print(toLog(time, level , "arm_interface", info))
 
+def unitTestUpperArmMove():
+    jointMsg jm = jointMsg("test")
+    init(jm, jointHandler)
+    target = jointHandler.randomAvailable()
+    upperArmMove(target, jointHandler)
+    if jointHander.pos.equal(target): 
+       time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
+       level = 2
+       info = "succeed" 
+    else:
+       time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
+       level = 1
+       info = "lowerArmMove test failed"
+        
+    print(toLog(time, level , "arm_interface", info))
+    
+    target = jointHandler.unreachable()
+    try:
+       upperArmMove(target, jointHandler)
+       time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
+       level = 1
+       info = "lowerArmMove test failed"
+    finally:
+       time = tm.strftime("%Y-%m-%d %H:%M:%S", tm.localtime())
+       level = 2
+       info = "succeed" 
+        
+    print(toLog(time, level , "arm_interface", info))
+
+
 if __name__ == "__main__":
-    testLowerArmMove()
-    testupperArmMove()
-    print("Test Arm Succeed")
+    unitTestInit()
+    unitTestLowerArmMove()
+    unitTestupperArmMove()
+    print("Unit Test Arm Succeed")
